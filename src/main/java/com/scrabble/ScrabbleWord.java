@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.scrabble;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,12 +7,12 @@ import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor
-public class ScrableWord {
+public class ScrabbleWord {
 
     private final String word;
     private final char[] sortedChars;
 
-    public ScrableWord(String word) {
+    public ScrabbleWord(String word) {
         this.word = word.toLowerCase();
         sortedChars = word.toCharArray();
         Arrays.sort(sortedChars);

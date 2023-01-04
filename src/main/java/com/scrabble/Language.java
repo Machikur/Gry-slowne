@@ -1,7 +1,5 @@
-package com.example.demo;
+package com.scrabble;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;

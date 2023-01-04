@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.scrabble;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
