@@ -1,16 +1,18 @@
 package com.example.demo;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Objects;
+
+@RequiredArgsConstructor
+@Getter
 public class ScrabbleChar {
 
     private final char letter;
     private final int quantity;
     private final int points;
 
-    public ScrabbleChar(char letter, int quantity, int points) {
-        this.letter = letter;
-        this.quantity = quantity;
-        this.points = points;
-    }
 
     public ScrabbleChar(char letter, int points) {
         this.letter = letter;
@@ -18,15 +20,16 @@ public class ScrabbleChar {
         this.points = points;
     }
 
-    public char getLetter() {
-        return letter;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ScrabbleChar that = (ScrabbleChar) o;
+        return letter == that.letter;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public int getPoints() {
-        return points;
+    @Override
+    public int hashCode() {
+        return Objects.hash(letter);
     }
 }

@@ -1,16 +1,18 @@
 package com.example.demo;
 
-import static com.example.demo.Config.MAX_CHARS;
+import java.util.List;
+
 import static com.example.demo.Config.TABLE_SIZE;
 
 public class ScrableTable {
 
     private final Field[][] fields;
-    private Dictionary dictionary;
-    private char[] enabledChars = new char[MAX_CHARS];
+    private final List<Character> lettersPool;
+    private ScrabbleDictionary scrabbleDictionary;
 
-    public ScrableTable(Dictionary dictionary) {
-        this.dictionary = dictionary;
+    public ScrableTable(ScrabbleDictionary dictionary) {
+        this.scrabbleDictionary = dictionary;
+        this.lettersPool = scrabbleDictionary.createLettersPoolForNewGame();
         this.fields = new Field[TABLE_SIZE][TABLE_SIZE];
         for (int x = 0; x < fields.length; x++) {
             for (int y = 0; y < fields[x].length; y++) {
