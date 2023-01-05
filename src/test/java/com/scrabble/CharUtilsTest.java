@@ -1,12 +1,12 @@
 package com.scrabble;
 
+import com.scrabble.pojo.ScrabbleWord;
+import com.scrabble.utill.CharUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
 
 import static com.scrabble.TestUtils.*;
 
@@ -153,7 +153,6 @@ class CharUtilsTest {
         //then
         Assertions.assertFalse(canBeBuild);
     }
-
 
 
 }

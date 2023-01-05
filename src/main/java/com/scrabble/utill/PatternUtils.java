@@ -1,5 +1,7 @@
-package com.scrabble;
+package com.scrabble.utill;
 
+import com.scrabble.pojo.Direction;
+import com.scrabble.pojo.ScrabbleField;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,8 +17,15 @@ public class PatternUtils {
     private final static String PATTERN_START = "^(";
     private final static String PATTERN_FINISH = ")$";
 
-    public static Pattern createPattern(ScrabbleField[] fieldsInLine) {
-        List<PatternPart> patternPartList = createPatternParts(fieldsInLine);
+
+    /**
+     *
+     * @param fieldsInLine which can be used to create word
+     * @param direction direction used to create word
+     * @return pattern includes all possibilities to create a word in given fields
+     */
+    public static Pattern createPattern(ScrabbleField[] fieldsInLine, Direction direction) {
+        List<PatternPart> patternPartList = createPatternParts(fieldsInLine, direction);
         if (patternPartList.isEmpty()) {
             return Pattern.compile("^\\w+$");
         }
@@ -26,7 +35,7 @@ public class PatternUtils {
         List<String> patterns = new ArrayList<>();
         for (int i = 0; i <= lastIndex; i++) {
             PatternPart currentInMainLoop = patternPartList.get(i);
-            int gap = lastOneMainLoop == null ? currentInMainLoop.startIndex : countGap(currentInMainLoop, lastOneMainLoop);
+            int gap = lastOneMainLoop == null ? currentInMainLoop.startIndex : countPossibleGap(currentInMainLoop, lastOneMainLoop);
             int maxInnerIndex = lastIndex;
             for (int k = i; k <= lastIndex; k++) {
                 StringBuilder pattern = new StringBuilder("(");
@@ -39,7 +48,10 @@ public class PatternUtils {
                     int requiredGap = currentInInnerLoop.startIndex - lastOneInnerLoop.finishIndex;
 
                     if (requiredGap != 0) {
-                        pattern.append("\\w").append("{").append(requiredGap).append("}");
+                        pattern.append("\\w");
+                        if (requiredGap > 1) {
+                            pattern.append("{").append(requiredGap).append("}");
+                        }
                     }
 
                     pattern.append(currentInInnerLoop.value);
@@ -51,7 +63,7 @@ public class PatternUtils {
                 }
                 int innerGap;
                 if (maxInnerIndex < lastIndex) {
-                    innerGap = countGap(patternPartList.get(maxInnerIndex + 1), lastOneInnerLoop);
+                    innerGap = countPossibleGap(patternPartList.get(maxInnerIndex + 1), lastOneInnerLoop);
                 } else {
                     innerGap = tableSize - lastOneInnerLoop.finishIndex;
                 }
@@ -64,71 +76,54 @@ public class PatternUtils {
         return Pattern.compile(PATTERN_START + StringUtils.join(patterns, "|") + PATTERN_FINISH);
     }
 
-    private static int countGap(PatternPart current, PatternPart last) {
-        return current.startIndex - last.finishIndex;
+    private static int countPossibleGap(PatternPart current, PatternPart last) {
+        return current.startIndex - last.finishIndex - 1;
     }
 
     private static void appendGapIfMoreThan0(StringBuilder builder, int gap) {
-        if (gap > 0) {
+        if (gap > 1) {
             builder.append("\\w").append("{0,").append(gap).append("}");
+        } else if (gap == 1) {
+            builder.append("\\w?");
         }
     }
 
-    private static List<PatternPart> createPatternParts(ScrabbleField[] fieldsInLine) {
-        if (fieldsInLine.length == 0) {
+    private static List<PatternPart> createPatternParts(ScrabbleField[] sortedFields, Direction direction) {
+        if (sortedFields.length == 0) {
             return Collections.emptyList();
         }
         List<PatternPart> patternPartList = new ArrayList<>();
-        Direction direction = recognizeDirection(fieldsInLine);
 
         ScrabbleField last = null;
         List<Character> characters = new LinkedList<>();
         int startIndex = 0;
-        int lastIndex = fieldsInLine.length - 1;
+        int lastIndex = sortedFields.length - 1;
         for (int i = 0; i <= lastIndex; i++) {
-            ScrabbleField scrabbleField = fieldsInLine[i];
-            if (scrabbleField.getLetterOn() == null) {
-                continue;
-            }
+            ScrabbleField scrabbleField = sortedFields[i];
+            Character letterOn = scrabbleField.getLetterOn();
             if (last == null) {
-                characters.add(scrabbleField.getLetterOn());
-                startIndex = scrabbleField.getIndexByDirection(direction);
+                if (letterOn != null) {
+                    characters.add(letterOn);
+                }
                 last = scrabbleField;
                 continue;
             }
-            if (last.isNextTo(scrabbleField, direction)) {
-                characters.add(scrabbleField.getLetterOn());
-            } else {
+            if (letterOn != null) {
+                if (characters.isEmpty()) {
+                    startIndex = scrabbleField.getIndexByDirection(direction);
+                }
+                characters.add(letterOn);
+            } else if (!characters.isEmpty()) {
                 patternPartList.add(new PatternPart(startIndex, StringUtils.join(characters, "")));
                 characters.clear();
-                characters.add(scrabbleField.getLetterOn());
-                startIndex = scrabbleField.getIndexByDirection(direction);
             }
-            if (i == lastIndex) {
+
+            if (i == lastIndex && !characters.isEmpty()) {
                 patternPartList.add(new PatternPart(startIndex, StringUtils.join(characters, "")));
             }
             last = scrabbleField;
         }
         return patternPartList;
-    }
-
-    private static Direction recognizeDirection(ScrabbleField[] fields) {
-        boolean xFlow = true;
-        boolean yFlow = true;
-        ScrabbleField previous = fields[0];
-        for (int i = 1; i < fields.length; i++) {
-            ScrabbleField current = fields[i];
-            if (yFlow && !previous.isNextTo(current, Direction.DOWN)) {
-                yFlow = false;
-            }
-            if (xFlow && !previous.isNextTo(current, Direction.RIGHT)) {
-                xFlow = false;
-            }
-            previous = current;
-        }
-        if (xFlow) return Direction.RIGHT;
-        if (yFlow) return Direction.DOWN;
-        throw new UnsupportedOperationException("Unknown direction");
     }
 
     private static class PatternPart {

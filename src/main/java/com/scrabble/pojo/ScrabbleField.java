@@ -1,4 +1,4 @@
-package com.scrabble;
+package com.scrabble.pojo;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +24,9 @@ public class ScrabbleField {
 
     public boolean isNextTo(ScrabbleField scrabbleField, Direction direction) {
         switch (direction) {
-            case RIGHT:
+            case HORIZONTALLY:
                 return this.y == scrabbleField.y && Math.abs(this.x - scrabbleField.x) == 1;
-            case DOWN:
+            case VERTICALLY:
                 return this.x == scrabbleField.x && Math.abs(this.y - scrabbleField.y) == 1;
             default:
                 throw new UnsupportedOperationException(String.format("%s - direction not recognized", direction));
@@ -35,9 +35,9 @@ public class ScrabbleField {
 
     public int getIndexByDirection(Direction direction) {
         switch (direction) {
-            case RIGHT:
+            case HORIZONTALLY:
                 return x;
-            case DOWN:
+            case VERTICALLY:
                 return y;
             default:
                 throw new UnsupportedOperationException(String.format("%s - direction not recognized", direction));

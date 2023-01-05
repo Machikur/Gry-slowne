@@ -1,4 +1,4 @@
-package com.scrabble;
+package com.scrabble.utill;
 
 import lombok.experimental.UtilityClass;
 

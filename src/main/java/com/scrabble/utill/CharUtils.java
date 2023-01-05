@@ -1,11 +1,12 @@
-package com.scrabble;
+package com.scrabble.utill;
 
+import com.scrabble.pojo.ScrabbleWord;
 import lombok.experimental.UtilityClass;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.scrabble.Config.BLANK_LETTER;
+import static com.scrabble.config.Config.BLANK_LETTER;
 
 @UtilityClass
 public class CharUtils {

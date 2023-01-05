@@ -1,5 +1,6 @@
 package com.scrabble;
 
+import com.scrabble.pojo.ScrabbleWord;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 

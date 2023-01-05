@@ -1,8 +1,17 @@
-package com.scrabble;
+package com.scrabble.core;
+
+import com.scrabble.pojo.ScrabbleChar;
+import com.scrabble.utill.FileUtils;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Words provider based on language provides all letters and words used in appropriate language
+ * Use resource files to keep all words in separate lines
+ */
 
 public enum Language implements WordsProvider {
     PL(
@@ -48,11 +57,6 @@ public enum Language implements WordsProvider {
             new ScrabbleChar(' ', 2, 0));
 
     @Override
-    public List<String> getEnabledWords() {
-        return FileUtils.loadFromResourceFile("pl");
-    }
-
-    @Override
     public List<Character> getLettersPool() {
         List<Character> allChars = new LinkedList<>();
         for (ScrabbleChar scrabbleChar : charList) {
@@ -65,7 +69,7 @@ public enum Language implements WordsProvider {
     }
 
     @Override
-    public int getPointsForChar(char ch) {
+    public int getBasicPointsForChar(char ch) {
         return charList.stream().filter(c -> c.getLetter() == ch)
                 .mapToInt(ScrabbleChar::getPoints)
                 .findAny()
@@ -73,12 +77,10 @@ public enum Language implements WordsProvider {
     }
 
     @Override
-    public int getPointsForWord(String s) {
-        int result = 0;
-        for (char c : s.toCharArray()) {
-            result += getPointsForChar(c);
-        }
-        return result;
+    public List<String> getEnabledWords(int maxSize) {
+        return FileUtils.loadFromResourceFile(this.name().toLowerCase()).stream()
+                .filter(s -> s.length() <= maxSize)
+                .collect(Collectors.toList());
     }
 
     final List<ScrabbleChar> charList;

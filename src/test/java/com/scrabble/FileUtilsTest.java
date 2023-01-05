@@ -1,5 +1,6 @@
 package com.scrabble;
 
+import com.scrabble.utill.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +9,7 @@ import java.util.List;
 class FileUtilsTest {
 
     @Test
-    public void shouldReadPolishDictionaryFile(){
+    public void shouldReadPolishDictionaryFile() {
         //when
         List<String> polishWords = FileUtils.loadFromResourceFile("pl");
 
@@ -19,9 +20,9 @@ class FileUtilsTest {
 
 
     @Test
-    public void shouldThrowException(){
+    public void shouldThrowException() {
         //when and then
-        Assertions.assertThrows(RuntimeException.class,()->{
+        Assertions.assertThrows(RuntimeException.class, () -> {
             FileUtils.loadFromResourceFile("notExistingFile");
         });
     }
