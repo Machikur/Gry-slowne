@@ -4,6 +4,6 @@ public interface TableConfiguration {
 
     int getTableSize();
 
-   ScrabbleFieldBonus getFieldBonus(int x, int y);
+   ScrabbleFieldBonus resolveFieldBonus(int x, int y);
 
 }

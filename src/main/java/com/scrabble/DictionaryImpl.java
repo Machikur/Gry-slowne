@@ -1,8 +1,7 @@
 package com.scrabble;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -16,12 +15,27 @@ public class DictionaryImpl implements ScrabbleDictionary {
         List<ScrabbleWord> words = this.provider.getEnabledWords().stream()
                 .map(ScrabbleWord::new)
                 .collect(Collectors.toList());
-        this.sortedByPointsWords = sortWordsByPoints(words);
+        this.sortedByPointsWords = sortWordsByLength(words);
     }
 
     @Override
-    public String findTheBestWord(String regex, int quantity) {
-        return null;
+    public String findTheBestWord(ScrabbleField[] fieldsInLine, List<Character> playerChars) {
+
+        List<Character> allChars = new LinkedList<>(playerChars);
+        addAllCharsToList(allChars, fieldsInLine);
+        char[] allAvailableChars = CharUtils.convertToArray(allChars);
+
+        List<String> possibleWords = findTheBestWords(allAvailableChars);
+
+        Pattern pattern = PatternUtils.createPattern(fieldsInLine);
+        return possibleWords.stream()
+                .filter(s -> pattern.matcher(s).find())
+                .max(Comparator.comparingInt(provider::getPointsForWord))
+                .orElse(null);
+    }
+
+    public List<String> findTheBestWords(char[] chars) {
+        return findTheBestWords(chars, Integer.MAX_VALUE);
     }
 
     @Override
@@ -53,16 +67,23 @@ public class DictionaryImpl implements ScrabbleDictionary {
 
     @Override
     public List<Character> createLettersPoolForNewGame() {
-        return new LinkedList<>(provider.getLettersPool());
+        return provider.getLettersPool();
+    }
+
+    private void addAllCharsToList(List<Character> list, ScrabbleField[] fields) {
+        for (ScrabbleField field : fields) {
+            if (field.getLetterOn() != null) {
+                list.add(field.getLetterOn());
+            }
+        }
     }
 
 
     /**
      * @param words all enabled words
-     * @return sorted map with keys sorted by score related to the word
+     * @return sorted map with keys sorted by length related to the word
      */
-
-    private TreeMap<Integer, List<ScrabbleWord>> sortWordsByPoints(List<ScrabbleWord> words) {
-        return words.stream().collect(Collectors.groupingBy(ScrabbleWord::getLength, () -> new TreeMap<>(Integer::compare), Collectors.toList()));
+    private TreeMap<Integer, List<ScrabbleWord>> sortWordsByLength(List<ScrabbleWord> words) {
+        return words.stream().collect(Collectors.groupingBy(ScrabbleWord::getLength, () -> new TreeMap<>((o1, o2) -> -Integer.compare(o1, o2)), Collectors.toList()));
     }
 }

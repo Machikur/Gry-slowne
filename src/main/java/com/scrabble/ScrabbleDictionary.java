@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ScrabbleDictionary {
 
-    String findTheBestWord(String regex, int quantity);
+    String findTheBestWord(ScrabbleField[] fieldsInLine, List<Character> playerChars);
 
     List<String> findTheBestWords(char[] chars, int quantity);
 

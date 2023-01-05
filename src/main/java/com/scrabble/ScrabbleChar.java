@@ -13,7 +13,6 @@ public class ScrabbleChar {
     private final int quantity;
     private final int points;
 
-
     public ScrabbleChar(char letter, int points) {
         this.letter = letter;
         this.quantity = 1;

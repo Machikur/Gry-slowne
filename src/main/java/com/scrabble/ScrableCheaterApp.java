@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ScrableCheater {
+public class ScrableCheaterApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ScrableCheater.class, args);
+		SpringApplication.run(ScrableCheaterApp.class, args);
 	}
 
 }

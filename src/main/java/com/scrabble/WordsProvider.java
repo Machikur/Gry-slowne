@@ -10,4 +10,6 @@ public interface WordsProvider {
 
     int getPointsForChar(char c);
 
+    int getPointsForWord(String s);
+
 }

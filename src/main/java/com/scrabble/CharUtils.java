@@ -3,11 +3,20 @@ package com.scrabble;
 import lombok.experimental.UtilityClass;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.scrabble.Config.BLANK_LETTER;
 
 @UtilityClass
 public class CharUtils {
+
+    public static char[] convertToArray(List<Character> collection) {
+        char[] result = new char[collection.size()];
+        for (int i = 0; i < collection.size(); i++) {
+            result[i] = collection.get(i);
+        }
+        return result;
+    }
 
     public static int countLettersNumberInArray(char[] letters, char wantedLetter) {
         int result = 0;

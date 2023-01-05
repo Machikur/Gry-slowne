@@ -43,7 +43,9 @@ public enum Language implements WordsProvider {
 
             new ScrabbleChar('ć', 6),
             new ScrabbleChar('ń', 7),
-            new ScrabbleChar('ź', 9));
+            new ScrabbleChar('ź', 9),
+
+            new ScrabbleChar(' ', 2, 0));
 
     @Override
     public List<String> getEnabledWords() {
@@ -64,11 +66,19 @@ public enum Language implements WordsProvider {
 
     @Override
     public int getPointsForChar(char ch) {
-        return charList.stream().filter(
-                        c -> c.getLetter() == ch)
+        return charList.stream().filter(c -> c.getLetter() == ch)
                 .mapToInt(ScrabbleChar::getPoints)
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("'%s' char is not recognized", ch)));
+    }
+
+    @Override
+    public int getPointsForWord(String s) {
+        int result = 0;
+        for (char c : s.toCharArray()) {
+            result += getPointsForChar(c);
+        }
+        return result;
     }
 
     final List<ScrabbleChar> charList;
