@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class ScrabbleField {
             case VERTICALLY:
                 return this.x == scrabbleField.x && Math.abs(this.y - scrabbleField.y) == 1;
             default:
-                throw new UnsupportedOperationException(String.format("%s - direction not recognized", direction));
+                throw new RuntimeException(String.format("%s - direction not recognized", direction));
         }
     }
 
@@ -40,7 +42,20 @@ public class ScrabbleField {
             case VERTICALLY:
                 return y;
             default:
-                throw new UnsupportedOperationException(String.format("%s - direction not recognized", direction));
+                throw new RuntimeException(String.format("%s - direction not recognized", direction));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ScrabbleField field = (ScrabbleField) o;
+        return x == field.x && y == field.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

@@ -57,13 +57,13 @@ class DirectionTest {
 
     @Test
     void shouldThrowException2() {
-//given
+        //given
         ScrabbleField[] fields = new ScrabbleField[]{
                 new ScrabbleField(0, 1, ScrabbleFieldBonus.DEFAULT),
                 new ScrabbleField(2, 3, ScrabbleFieldBonus.DEFAULT)
         };
 
         //when && then
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> Direction.recognizeDirection(fields));
+        Assertions.assertThrows(RuntimeException.class, () -> Direction.recognizeDirection(fields));
     }
 }

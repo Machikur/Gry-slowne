@@ -3,13 +3,13 @@ package com.scrabble.game;
 import com.scrabble.config.Config;
 import com.scrabble.config.TableConfiguration;
 import com.scrabble.core.ScrabbleDictionary;
-import com.scrabble.pojo.Direction;
-import com.scrabble.pojo.Position;
-import com.scrabble.pojo.ScrabbleField;
-import com.scrabble.pojo.ScrabbleWordProposition;
+import com.scrabble.pojo.*;
 import com.scrabble.utill.CharUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Main class used to create and manipulate game
@@ -38,20 +38,30 @@ public class ScrableTable {
     public ScrabbleWordProposition getBestWordProposition(Position position) {
         return getAllAvailableFieldsInLine(position).stream()
                 .map(fields -> scrabbleDictionary.findTheBestProposition(fields, playerLetters))
-                .filter(Objects::nonNull)
                 .max(ScrabbleWordProposition::compareTo)
-                .orElse(null);
+                .orElse(ScrabbleWordProposition.EMPTY_PROPOSITION);
     }
 
     public List<String> getBestWordsToUse(int quantity) {
         return scrabbleDictionary.findTheBestWords(CharUtils.convertToArray(playerLetters), quantity);
     }
 
-    public void poolNextLetter() {
+    public char poolNextLetter() {
         if (lettersPool.isEmpty()) {
-            throw new UnsupportedOperationException("There is no more letters to pool");
+            throw new RuntimeException("There is no more letters to pool");
         }
-        this.playerLetters.add(lettersPool.poll());
+        char c = lettersPool.poll();
+        this.playerLetters.add(c);
+        return c;
+    }
+
+    public List<Character> getPlayerLetters() {
+        return playerLetters;
+    }
+
+    public void putWord(ScrableWordRequest request) {
+
+
     }
 
     private List<ScrabbleField[]> getAllAvailableFieldsInLine(Position position) {
@@ -73,7 +83,7 @@ public class ScrableTable {
                 if (x < scrabbleFields.length) {
                     fieldsToCheck.add(scrabbleFields[x + 1]);
                 }
-                return splitIntoAvailableFields(line, fieldsToCheck, direction);
+                return splitIntoAvailableFields(line, fieldsToCheck);
             case VERTICALLY:
                 if (y > 0) {
                     fieldsToCheck.add(getAllByYPos(y - 1));
@@ -81,12 +91,12 @@ public class ScrableTable {
                 if (y < scrabbleFields.length) {
                     fieldsToCheck.add(getAllByYPos(y + 1));
                 }
-                return splitIntoAvailableFields(line, fieldsToCheck, direction);
+                return splitIntoAvailableFields(line, fieldsToCheck);
         }
         return Collections.emptyList();
     }
 
-    private List<ScrabbleField[]> splitIntoAvailableFields(ScrabbleField[] line, List<ScrabbleField[]> fieldsToCheck, Direction direction) {
+    private List<ScrabbleField[]> splitIntoAvailableFields(ScrabbleField[] line, List<ScrabbleField[]> fieldsToCheck) {
         List<ScrabbleField[]> result = new ArrayList<>();
         List<ScrabbleField> current = new ArrayList<>();
         int maxLength = line.length - 1;
@@ -118,4 +128,9 @@ public class ScrableTable {
         }
         return fields;
     }
+
+    public ScrableTableData toData() {
+        return new ScrableTableData(scrabbleFields, playerLetters, lettersPool.size());
+    }
+
 }

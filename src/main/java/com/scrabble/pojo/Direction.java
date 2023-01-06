@@ -23,6 +23,6 @@ public enum Direction {
         }
         if (xFlow) return Direction.HORIZONTALLY;
         if (yFlow) return Direction.VERTICALLY;
-        throw new UnsupportedOperationException("Unknown direction");
+        throw new RuntimeException("Unknown direction");
     }
 }

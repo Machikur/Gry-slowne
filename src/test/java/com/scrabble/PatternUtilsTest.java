@@ -65,7 +65,6 @@ class PatternUtilsTest {
         //when
         Pattern pattern = PatternUtils.createPattern(fields, Direction.recognizeDirection(fields));
 
-
         //then
         Assertions.assertEquals(expectedPattern, pattern.pattern());
     }

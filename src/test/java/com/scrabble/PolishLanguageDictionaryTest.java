@@ -1,6 +1,6 @@
 package com.scrabble;
 
-import com.scrabble.core.DictionaryImpl;
+import com.scrabble.core.ScrabbleDictionaryImpl;
 import com.scrabble.core.Language;
 import com.scrabble.pojo.ScrabbleField;
 import com.scrabble.pojo.ScrabbleFieldBonus;
@@ -17,7 +17,7 @@ public class PolishLanguageDictionaryTest {
     @Test
     void shouldFindTheBestWord() {
         //given
-        DictionaryImpl dictionary = new DictionaryImpl(Language.PL);
+        ScrabbleDictionaryImpl dictionary = new ScrabbleDictionaryImpl(Language.PL);
         ScrabbleField[] fields = new ScrabbleField[]{
                 new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, 'b'),
                 new ScrabbleField(1, 0, ScrabbleFieldBonus.DEFAULT),
@@ -49,7 +49,7 @@ public class PolishLanguageDictionaryTest {
     @Test
     void shouldFind10Results() {
         //given
-        DictionaryImpl dictionary = new DictionaryImpl(Language.PL);
+        ScrabbleDictionaryImpl dictionary = new ScrabbleDictionaryImpl(Language.PL);
         List<Character> characters = Language.PL.getLettersPool();
 
         //when

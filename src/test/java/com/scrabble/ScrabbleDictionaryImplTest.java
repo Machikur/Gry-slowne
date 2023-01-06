@@ -1,9 +1,10 @@
 package com.scrabble;
 
-import com.scrabble.core.DictionaryImpl;
+import com.scrabble.core.ScrabbleDictionaryImpl;
 import com.scrabble.core.WordsProvider;
 import com.scrabble.pojo.ScrabbleField;
 import com.scrabble.pojo.ScrabbleFieldBonus;
+import com.scrabble.pojo.ScrabbleWordProposition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
-class DictionaryImplTest {
+class ScrabbleDictionaryImplTest {
 
     private static final String name0 = "janusz";
     private static final String name1 = "januszex";
@@ -28,7 +29,7 @@ class DictionaryImplTest {
     @Test
     void shouldFindTheBestWordVertically() {
         //given
-        DictionaryImpl dictionary = new DictionaryImpl(createMockProvider(name0, name1, name2, name3, name4));
+        ScrabbleDictionaryImpl dictionary = new ScrabbleDictionaryImpl(createMockProvider(name0, name1, name2, name3, name4));
         ScrabbleField[] fields = new ScrabbleField[]{
                 new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, 'j'),
                 new ScrabbleField(0, 1, ScrabbleFieldBonus.DEFAULT),
@@ -54,7 +55,7 @@ class DictionaryImplTest {
     @Test
     void shouldFindTheBestWordHorizontally() {
         //given
-        DictionaryImpl dictionary = new DictionaryImpl(createMockProvider(name0, name1, name2, name3, name4));
+        ScrabbleDictionaryImpl dictionary = new ScrabbleDictionaryImpl(createMockProvider(name0, name1, name2, name3, name4));
         ScrabbleField[] fields = new ScrabbleField[]{
                 new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, 'j'),
                 new ScrabbleField(1, 0, ScrabbleFieldBonus.DEFAULT),
@@ -80,7 +81,7 @@ class DictionaryImplTest {
     @Test
     void shouldFindTheBestWordHorizontally2() {
         //given
-        DictionaryImpl dictionary = new DictionaryImpl(createMockProvider(name0, name2, name3, name4));
+        ScrabbleDictionaryImpl dictionary = new ScrabbleDictionaryImpl(createMockProvider(name0, name2, name3, name4));
         ScrabbleField[] fields = new ScrabbleField[]{
                 new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, 'j'),
                 new ScrabbleField(1, 0, ScrabbleFieldBonus.DEFAULT),
@@ -106,7 +107,7 @@ class DictionaryImplTest {
     @Test
     void shouldFindNoWord() {
         //given
-        DictionaryImpl dictionary = new DictionaryImpl(createMockProvider(name0, name2, name3, name4));
+        ScrabbleDictionaryImpl dictionary = new ScrabbleDictionaryImpl(createMockProvider(name0, name2, name3, name4));
         ScrabbleField[] fields = new ScrabbleField[]{
                 new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, 'j'),
                 new ScrabbleField(1, 0, ScrabbleFieldBonus.DEFAULT, 'a'),
@@ -126,7 +127,7 @@ class DictionaryImplTest {
         Object theBestWord = dictionary.findTheBestProposition(fields, playerChars);
 
         //then
-        Assertions.assertNull(theBestWord);
+        Assertions.assertEquals(theBestWord, ScrabbleWordProposition.EMPTY_PROPOSITION);
     }
 
     private WordsProvider createMockProvider(String... words) {

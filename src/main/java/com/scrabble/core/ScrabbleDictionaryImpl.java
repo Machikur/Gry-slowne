@@ -4,26 +4,30 @@ import com.scrabble.config.Config;
 import com.scrabble.pojo.*;
 import com.scrabble.utill.CharUtils;
 import com.scrabble.utill.PatternUtils;
-import org.springframework.lang.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static com.scrabble.pojo.ScrabbleWordProposition.EMPTY_PROPOSITION;
 
 /**
  * Simple Dictionary Implementation based on Patterns to find the best results
  */
 
-public class DictionaryImpl implements ScrabbleDictionary {
+public class ScrabbleDictionaryImpl implements ScrabbleDictionary {
 
     private final WordsProvider provider;
     private final TreeMap<Integer, List<ScrabbleWord>> sortedByPointsWords;
 
-    public DictionaryImpl(WordsProvider provider) {
+    public ScrabbleDictionaryImpl(WordsProvider provider) {
         this(provider, Config.DEFAULT_TABLE_SIZE);
     }
 
-    public DictionaryImpl(WordsProvider provider, int tableSize) {
+    public ScrabbleDictionaryImpl(WordsProvider provider, int tableSize) {
         this.provider = provider;
         List<ScrabbleWord> words = this.provider.getEnabledWords(tableSize).stream()
                 .map(ScrabbleWord::new)
@@ -42,16 +46,15 @@ public class DictionaryImpl implements ScrabbleDictionary {
 
         List<String> possibleWords = findTheBestWords(allAvailableChars, -1);
         if (possibleWords.isEmpty()) {
-            return null;
+            return EMPTY_PROPOSITION;
         }
 
         Pattern pattern = PatternUtils.createPattern(availableFieldsInLine, direction);
         return possibleWords.stream()
                 .filter(s -> pattern.matcher(s).find())
                 .map(s -> toProposition(availableFieldsInLine, direction, s))
-                .filter(Objects::nonNull)
                 .max(ScrabbleWordProposition::compareTo)
-                .orElse(null);
+                .orElse(EMPTY_PROPOSITION);
     }
 
     @Override
@@ -81,7 +84,6 @@ public class DictionaryImpl implements ScrabbleDictionary {
         return result;
     }
 
-    @Nullable
     private ScrabbleWordProposition toProposition(ScrabbleField[] fields, Direction direction, String word) {
         char firstSign = word.charAt(0);
         for (int i = 0; i < fields.length; i++) {
@@ -92,13 +94,13 @@ public class DictionaryImpl implements ScrabbleDictionary {
             }
             if (current.equals(firstSign)) {
                 if (!checkIfAnyLetterIsAdded(fields, word, i)) {
-                    return null;
+                    continue;
                 }
                 int pointsForWord = countPoints(fields, word, i);
                 return new ScrabbleWordProposition(new Position(field.getX(), field.getY()), word, pointsForWord, direction);
             }
         }
-        return null;
+        return EMPTY_PROPOSITION;
     }
 
     private boolean checkIfAnyLetterIsAdded(ScrabbleField[] fields, String word, int startIndex) {
@@ -139,6 +141,11 @@ public class DictionaryImpl implements ScrabbleDictionary {
         return provider.getLettersPool();
     }
 
+    @Override
+    public boolean containsWord(String word) {
+        return sortedByPointsWords.get(word.length()).contains(word);
+    }
+
     private void addAllCharsToList(List<Character> list, ScrabbleField[] fields) {
         for (ScrabbleField field : fields) {
             if (field.getLetterOn() != null) {
@@ -146,7 +153,6 @@ public class DictionaryImpl implements ScrabbleDictionary {
             }
         }
     }
-
 
     /**
      * @param words all enabled words
