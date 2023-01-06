@@ -3,7 +3,7 @@ package com.scrabble.controller;
 import com.scrabble.core.Language;
 import com.scrabble.game.TableService;
 import com.scrabble.pojo.Position;
-import com.scrabble.pojo.ScrableWordRequest;
+import com.scrabble.pojo.ScrabbleWordRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +19,7 @@ public class TableController {
     }
 
     @PostMapping("/word")
-    public Object putWord(@RequestBody ScrableWordRequest request) {
+    public Object putWord(@RequestBody ScrabbleWordRequest request) {
         tableService.putWord(request);
         return tableService.getData();
     }

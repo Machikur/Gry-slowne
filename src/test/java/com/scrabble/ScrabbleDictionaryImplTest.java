@@ -2,6 +2,7 @@ package com.scrabble;
 
 import com.scrabble.core.ScrabbleDictionaryImpl;
 import com.scrabble.core.WordsProvider;
+import com.scrabble.pojo.ScrabbleChar;
 import com.scrabble.pojo.ScrabbleField;
 import com.scrabble.pojo.ScrabbleFieldBonus;
 import com.scrabble.pojo.ScrabbleWordProposition;
@@ -12,6 +13,8 @@ import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class ScrabbleDictionaryImplTest {
 
@@ -31,19 +34,22 @@ class ScrabbleDictionaryImplTest {
         //given
         ScrabbleDictionaryImpl dictionary = new ScrabbleDictionaryImpl(createMockProvider(name0, name1, name2, name3, name4));
         ScrabbleField[] fields = new ScrabbleField[]{
-                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, 'j'),
+                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('j', 1)),
                 new ScrabbleField(0, 1, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(0, 2, ScrabbleFieldBonus.DEFAULT, 'n'),
-                new ScrabbleField(0, 3, ScrabbleFieldBonus.DEFAULT, 'u'),
+                new ScrabbleField(0, 2, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('n', 1)),
+                new ScrabbleField(0, 3, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('u', 1)),
                 new ScrabbleField(0, 4, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(0, 5, ScrabbleFieldBonus.DEFAULT, 'z'),
+                new ScrabbleField(0, 5, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('z', 1)),
                 new ScrabbleField(0, 6, ScrabbleFieldBonus.DEFAULT),
                 new ScrabbleField(0, 7, ScrabbleFieldBonus.DEFAULT),
                 new ScrabbleField(0, 8, ScrabbleFieldBonus.DEFAULT),
                 new ScrabbleField(0, 9, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(0, 10, ScrabbleFieldBonus.DEFAULT, 'z'),
+                new ScrabbleField(0, 10, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('z', 1)),
         };
-        List<Character> playerChars = Arrays.asList('a', 's', 'z');
+        List<ScrabbleChar> playerChars = Arrays.asList(
+                new ScrabbleChar('a', 1),
+                new ScrabbleChar('s', 1),
+                new ScrabbleChar('z', 1));
 
         //when
         String theBestWord = dictionary.findTheBestProposition(fields, playerChars).getWord();
@@ -57,19 +63,25 @@ class ScrabbleDictionaryImplTest {
         //given
         ScrabbleDictionaryImpl dictionary = new ScrabbleDictionaryImpl(createMockProvider(name0, name1, name2, name3, name4));
         ScrabbleField[] fields = new ScrabbleField[]{
-                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, 'j'),
-                new ScrabbleField(1, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(2, 0, ScrabbleFieldBonus.DEFAULT, 'n'),
-                new ScrabbleField(3, 0, ScrabbleFieldBonus.DEFAULT, 'u'),
-                new ScrabbleField(4, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(5, 0, ScrabbleFieldBonus.DEFAULT, 'z'),
-                new ScrabbleField(6, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(7, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(8, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(9, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(10, 0, ScrabbleFieldBonus.DEFAULT, 'z'),
+                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('j', 1)),
+                new ScrabbleField(0, 1, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 2, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('n', 1)),
+                new ScrabbleField(0, 3, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('u', 1)),
+                new ScrabbleField(0, 4, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 5, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('z', 1)),
+                new ScrabbleField(0, 6, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 7, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 8, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 9, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 10, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('z', 1)),
         };
-        List<Character> playerChars = Arrays.asList('a', 's', 'z', 'e', 'x');
+        List<ScrabbleChar> playerChars = Arrays.asList(
+                new ScrabbleChar('a', 1),
+                new ScrabbleChar('s', 1),
+                new ScrabbleChar('z', 1),
+                new ScrabbleChar('e', 1),
+                new ScrabbleChar('x', 1),
+                new ScrabbleChar('a', 1));
 
         //when
         String theBestWord = dictionary.findTheBestProposition(fields, playerChars).getWord();
@@ -83,19 +95,25 @@ class ScrabbleDictionaryImplTest {
         //given
         ScrabbleDictionaryImpl dictionary = new ScrabbleDictionaryImpl(createMockProvider(name0, name2, name3, name4));
         ScrabbleField[] fields = new ScrabbleField[]{
-                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, 'j'),
-                new ScrabbleField(1, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(2, 0, ScrabbleFieldBonus.DEFAULT, 'n'),
-                new ScrabbleField(3, 0, ScrabbleFieldBonus.DEFAULT, 'u'),
-                new ScrabbleField(4, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(5, 0, ScrabbleFieldBonus.DEFAULT, 'z'),
-                new ScrabbleField(6, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(7, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(8, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(9, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(10, 0, ScrabbleFieldBonus.DEFAULT, 'z'),
+                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('j', 1)),
+                new ScrabbleField(0, 1, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 2, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('n', 1)),
+                new ScrabbleField(0, 3, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('u', 1)),
+                new ScrabbleField(0, 4, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 5, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('z', 1)),
+                new ScrabbleField(0, 6, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 7, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 8, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 9, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 10, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('z', 1))
         };
-        List<Character> playerChars = Arrays.asList('a', 's', 'z', 'e', 'x');
+        List<ScrabbleChar> playerChars = Arrays.asList(
+                new ScrabbleChar('a', 1),
+                new ScrabbleChar('s', 1),
+                new ScrabbleChar('z', 1),
+                new ScrabbleChar('e', 1),
+                new ScrabbleChar('x', 1));
+
 
         //when
         String theBestWord = dictionary.findTheBestProposition(fields, playerChars).getWord();
@@ -109,19 +127,24 @@ class ScrabbleDictionaryImplTest {
         //given
         ScrabbleDictionaryImpl dictionary = new ScrabbleDictionaryImpl(createMockProvider(name0, name2, name3, name4));
         ScrabbleField[] fields = new ScrabbleField[]{
-                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, 'j'),
-                new ScrabbleField(1, 0, ScrabbleFieldBonus.DEFAULT, 'a'),
-                new ScrabbleField(2, 0, ScrabbleFieldBonus.DEFAULT, 'n'),
-                new ScrabbleField(3, 0, ScrabbleFieldBonus.DEFAULT, 'u'),
-                new ScrabbleField(4, 0, ScrabbleFieldBonus.DEFAULT, 's'),
-                new ScrabbleField(5, 0, ScrabbleFieldBonus.DEFAULT, 'z'),
-                new ScrabbleField(6, 0, ScrabbleFieldBonus.DEFAULT, 'e'),
-                new ScrabbleField(7, 0, ScrabbleFieldBonus.DEFAULT, 'x'),
-                new ScrabbleField(8, 0, ScrabbleFieldBonus.DEFAULT, 'i'),
-                new ScrabbleField(9, 0, ScrabbleFieldBonus.DEFAULT, 'x'),
-                new ScrabbleField(10, 0, ScrabbleFieldBonus.DEFAULT, 'z'),
+                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('j', 1)),
+                new ScrabbleField(0, 1, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('a', 1)),
+                new ScrabbleField(0, 2, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('n', 1)),
+                new ScrabbleField(0, 3, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('u', 1)),
+                new ScrabbleField(0, 4, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('s', 1)),
+                new ScrabbleField(0, 5, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('z', 1)),
+                new ScrabbleField(0, 6, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('e', 1)),
+                new ScrabbleField(0, 7, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('x', 1)),
+                new ScrabbleField(0, 8, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('i', 1)),
+                new ScrabbleField(0, 9, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('x', 1)),
+                new ScrabbleField(0, 10, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('z', 1)),
         };
-        List<Character> playerChars = Arrays.asList('a', 's', 'z', 'e', 'x');
+        List<ScrabbleChar> playerChars = Arrays.asList(
+                new ScrabbleChar('a', 1),
+                new ScrabbleChar('s', 1),
+                new ScrabbleChar('z', 1),
+                new ScrabbleChar('e', 1),
+                new ScrabbleChar('x', 1));
 
         //when
         Object theBestWord = dictionary.findTheBestProposition(fields, playerChars);
@@ -131,9 +154,12 @@ class ScrabbleDictionaryImplTest {
     }
 
     private WordsProvider createMockProvider(String... words) {
+        List<ScrabbleChar> characters = Stream.of('j', 'a', 'n', 'u', 's', 'z', 'e', 'x', 'i', 'ż', 'ó', 'ł', 'ć')
+                .map(c -> new ScrabbleChar(c, 0))
+                .collect(Collectors.toList());
         WordsProvider provider = Mockito.mock(WordsProvider.class);
         Mockito.when(provider.getEnabledWords(Mockito.anyInt())).thenReturn(Arrays.asList(words));
-        Mockito.when(provider.getLettersPool()).thenReturn(Arrays.asList('j', 'a', 'n', 'u', 's', 'z', 'e', 'x', 'i', 'ż', 'ó', 'ł', 'ć'));
+        Mockito.when(provider.getLettersPool()).thenReturn(characters);
         Mockito.when(provider.getBasicPointsForChar(Mockito.anyChar())).then(a -> (int) (Character) a.getArguments()[0]);
         return provider;
     }

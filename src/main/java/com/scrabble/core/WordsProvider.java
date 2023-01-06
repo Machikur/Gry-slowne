@@ -1,5 +1,7 @@
 package com.scrabble.core;
 
+import com.scrabble.pojo.ScrabbleChar;
+
 import java.util.List;
 
 public interface WordsProvider {
@@ -11,9 +13,9 @@ public interface WordsProvider {
     List<String> getEnabledWords(int maxSize);
 
     /**
-     * @return lower case letters available in game including quantity
+     * @return lower case Scrabble chars available in game including quantity
      */
-    List<Character> getLettersPool();
+    List<ScrabbleChar> getLettersPool();
 
     /**
      * @param c searching lower case char

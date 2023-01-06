@@ -1,5 +1,6 @@
 package com.scrabble.utill;
 
+import com.scrabble.pojo.ScrabbleChar;
 import com.scrabble.pojo.ScrabbleWord;
 import lombok.experimental.UtilityClass;
 
@@ -11,10 +12,10 @@ import static com.scrabble.config.Config.BLANK_LETTER;
 @UtilityClass
 public class CharUtils {
 
-    public static char[] convertToArray(List<Character> collection) {
+    public static char[] convertToCharArray(List<ScrabbleChar> collection) {
         char[] result = new char[collection.size()];
         for (int i = 0; i < collection.size(); i++) {
-            result[i] = collection.get(i);
+            result[i] = collection.get(i).getLetter();
         }
         return result;
     }

@@ -36,11 +36,11 @@ public class ScrabbleDictionaryImpl implements ScrabbleDictionary {
     }
 
     @Override
-    public ScrabbleWordProposition findTheBestProposition(ScrabbleField[] availableFieldsInLine, List<Character> playerChars) {
+    public ScrabbleWordProposition findTheBestProposition(ScrabbleField[] availableFieldsInLine, List<ScrabbleChar> playerChars) {
 
-        List<Character> allChars = new LinkedList<>(playerChars);
+        List<ScrabbleChar> allChars = new LinkedList<>(playerChars);
         addAllCharsToList(allChars, availableFieldsInLine);
-        char[] allAvailableChars = CharUtils.convertToArray(allChars);
+        char[] allAvailableChars = CharUtils.convertToCharArray(allChars);
 
         Direction direction = Direction.recognizeDirection(availableFieldsInLine);
 
@@ -88,11 +88,11 @@ public class ScrabbleDictionaryImpl implements ScrabbleDictionary {
         char firstSign = word.charAt(0);
         for (int i = 0; i < fields.length; i++) {
             ScrabbleField field = fields[i];
-            Character current = field.getLetterOn();
+            ScrabbleChar current = field.getScrabbleCharOn();
             if (current == null) {
                 continue;
             }
-            if (current.equals(firstSign)) {
+            if (current.getLetter() == firstSign) {
                 if (!checkIfAnyLetterIsAdded(fields, word, i)) {
                     continue;
                 }
@@ -105,7 +105,7 @@ public class ScrabbleDictionaryImpl implements ScrabbleDictionary {
 
     private boolean checkIfAnyLetterIsAdded(ScrabbleField[] fields, String word, int startIndex) {
         for (int i = startIndex; i < startIndex + word.length(); i++) {
-            if (fields[i].getLetterOn() == null) {
+            if (fields[i].getScrabbleCharOn() == null) {
                 return true;
             }
         }
@@ -137,7 +137,7 @@ public class ScrabbleDictionaryImpl implements ScrabbleDictionary {
     }
 
     @Override
-    public List<Character> getLettersPoolForNewGame() {
+    public List<ScrabbleChar> getScrabbleCharsPoolForNewGame() {
         return provider.getLettersPool();
     }
 
@@ -146,10 +146,10 @@ public class ScrabbleDictionaryImpl implements ScrabbleDictionary {
         return sortedByPointsWords.get(word.length()).contains(word);
     }
 
-    private void addAllCharsToList(List<Character> list, ScrabbleField[] fields) {
+    private void addAllCharsToList(List<ScrabbleChar> list, ScrabbleField[] fields) {
         for (ScrabbleField field : fields) {
-            if (field.getLetterOn() != null) {
-                list.add(field.getLetterOn());
+            if (field.getScrabbleCharOn() != null) {
+                list.add(field.getScrabbleCharOn());
             }
         }
     }

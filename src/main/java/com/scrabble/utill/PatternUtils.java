@@ -1,6 +1,7 @@
 package com.scrabble.utill;
 
 import com.scrabble.pojo.Direction;
+import com.scrabble.pojo.ScrabbleChar;
 import com.scrabble.pojo.ScrabbleField;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
@@ -100,19 +101,19 @@ public class PatternUtils {
         int lastIndex = sortedFields.length - 1;
         for (int i = 0; i <= lastIndex; i++) {
             ScrabbleField scrabbleField = sortedFields[i];
-            Character letterOn = scrabbleField.getLetterOn();
+            ScrabbleChar charOn = scrabbleField.getScrabbleCharOn();
             if (last == null) {
-                if (letterOn != null) {
-                    characters.add(letterOn);
+                if (charOn != null) {
+                    characters.add(charOn.getLetter());
                 }
                 last = scrabbleField;
                 continue;
             }
-            if (letterOn != null) {
+            if (charOn != null) {
                 if (characters.isEmpty()) {
                     startIndex = scrabbleField.getIndexByDirection(direction);
                 }
-                characters.add(letterOn);
+                characters.add(charOn.getLetter());
             } else if (!characters.isEmpty()) {
                 patternPartList.add(new PatternPart(startIndex, StringUtils.join(characters, "")));
                 characters.clear();

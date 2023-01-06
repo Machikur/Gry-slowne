@@ -3,10 +3,7 @@ package com.scrabble.game;
 import com.scrabble.config.DefaultTableConfiguration;
 import com.scrabble.core.Language;
 import com.scrabble.core.ScrabbleDictionaryImpl;
-import com.scrabble.pojo.Position;
-import com.scrabble.pojo.ScrabbleWordProposition;
-import com.scrabble.pojo.ScrableTableData;
-import com.scrabble.pojo.ScrableWordRequest;
+import com.scrabble.pojo.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -16,22 +13,22 @@ public class TableService {
 
     private ScrableTable scrableTable = null;
 
-    public char poolLetter() {
+    public ScrabbleChar poolLetter() {
         ensureTableIsCreated();
         return scrableTable.poolNextLetter();
     }
 
-    public void putWord(ScrableWordRequest request) {
+    public void putWord(ScrabbleWordRequest request) {
         ensureTableIsCreated();
         scrableTable.putWord(request);
     }
 
-    public ScrableTableData getData() {
+    public ScrabbleTableData getData() {
         ensureTableIsCreated();
         return scrableTable.toData();
     }
 
-    public ScrableTableData getOrCreateNewTable(Language language, boolean force) {
+    public ScrabbleTableData getOrCreateNewTable(Language language, boolean force) {
         if (force || scrableTable == null) {
             this.scrableTable = new ScrableTable(new ScrabbleDictionaryImpl(language), new DefaultTableConfiguration());
         }

@@ -19,13 +19,13 @@ import java.util.List;
 public class ScrableTable {
 
     private final ScrabbleField[][] scrabbleFields;
-    private final LinkedList<Character> lettersPool;
+    private final LinkedList<ScrabbleChar> lettersPool;
     private final ScrabbleDictionary scrabbleDictionary;
-    private final List<Character> playerLetters = new ArrayList<>();
+    private final List<ScrabbleChar> playerLetters = new ArrayList<>();
 
     public ScrableTable(ScrabbleDictionary dictionary, TableConfiguration c) {
         this.scrabbleDictionary = dictionary;
-        this.lettersPool = new LinkedList<>(scrabbleDictionary.getLettersPoolForNewGame());
+        this.lettersPool = new LinkedList<>(scrabbleDictionary.getScrabbleCharsPoolForNewGame());
         Collections.shuffle(this.lettersPool);
         this.scrabbleFields = new ScrabbleField[c.getTableSize()][c.getTableSize()];
         for (int x = 0; x < scrabbleFields.length; x++) {
@@ -43,23 +43,23 @@ public class ScrableTable {
     }
 
     public List<String> getBestWordsToUse(int quantity) {
-        return scrabbleDictionary.findTheBestWords(CharUtils.convertToArray(playerLetters), quantity);
+        return scrabbleDictionary.findTheBestWords(CharUtils.convertToCharArray(playerLetters), quantity);
     }
 
-    public char poolNextLetter() {
+    public ScrabbleChar poolNextLetter() {
         if (lettersPool.isEmpty()) {
             throw new RuntimeException("There is no more letters to pool");
         }
-        char c = lettersPool.poll();
+        ScrabbleChar c = lettersPool.poll();
         this.playerLetters.add(c);
         return c;
     }
 
-    public List<Character> getPlayerLetters() {
+    public List<ScrabbleChar> getPlayerLetters() {
         return playerLetters;
     }
 
-    public void putWord(ScrableWordRequest request) {
+    public void putWord(ScrabbleWordRequest request) {
 
 
     }
@@ -129,8 +129,8 @@ public class ScrableTable {
         return fields;
     }
 
-    public ScrableTableData toData() {
-        return new ScrableTableData(scrabbleFields, playerLetters, lettersPool.size());
+    public ScrabbleTableData toData() {
+        return new ScrabbleTableData(scrabbleFields, playerLetters, lettersPool.size());
     }
 
 }

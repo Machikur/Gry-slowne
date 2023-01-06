@@ -1,5 +1,6 @@
 package com.scrabble.core;
 
+import com.scrabble.pojo.ScrabbleChar;
 import com.scrabble.pojo.ScrabbleField;
 import com.scrabble.pojo.ScrabbleWordProposition;
 
@@ -12,7 +13,7 @@ public interface ScrabbleDictionary {
      * @param playerChars           lower case player chars pool available
      * @return highest scoring Proposition or {@link ScrabbleWordProposition#EMPTY_PROPOSITION} when can't find any
      */
-    ScrabbleWordProposition findTheBestProposition(ScrabbleField[] availableFieldsInLine, List<Character> playerChars);
+    ScrabbleWordProposition findTheBestProposition(ScrabbleField[] availableFieldsInLine, List<ScrabbleChar> playerChars);
 
     /**
      * @param chars       lower case chars which can be used to create word
@@ -23,9 +24,9 @@ public interface ScrabbleDictionary {
 
 
     /**
-     * @return lower case letters Pool enabled in single game
+     * @return lower case scrabble chars Pool enabled in single game
      */
-    List<Character> getLettersPoolForNewGame();
+    List<ScrabbleChar> getScrabbleCharsPoolForNewGame();
 
     boolean containsWord(String word);
 

@@ -15,13 +15,13 @@ public class ScrabbleField {
     private final int y;
     private boolean bonusCaught = false;
     private final ScrabbleFieldBonus scrabbleFieldBonus;
-    private Character letterOn;
+    private ScrabbleChar scrabbleCharOn;
 
-    public ScrabbleField(int x, int y, ScrabbleFieldBonus scrabbleFieldBonus, Character letterOn) {
+    public ScrabbleField(int x, int y, ScrabbleFieldBonus scrabbleFieldBonus, ScrabbleChar charOn) {
         this.x = x;
         this.y = y;
         this.scrabbleFieldBonus = scrabbleFieldBonus;
-        this.letterOn = letterOn;
+        this.scrabbleCharOn = charOn;
     }
 
     public boolean isNextTo(ScrabbleField scrabbleField, Direction direction) {

@@ -3,7 +3,7 @@ package com.scrabble.pojo;
 import lombok.Data;
 
 @Data
-public class ScrableWordRequest {
+public class ScrabbleWordRequest {
 
     private final Position startPosition;
     private final String word;
