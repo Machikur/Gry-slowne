@@ -143,7 +143,18 @@ public class ScrabbleDictionaryImpl implements ScrabbleDictionary {
 
     @Override
     public boolean containsWord(String word) {
-        return sortedByPointsWords.get(word.length()).contains(word);
+        int length = word.length();
+        return sortedByPointsWords.get(length).stream()
+                .anyMatch(w -> w.containsWord(word));
+    }
+
+    @Override
+    public void saveNewWord(String word) {
+        String result = word.trim();
+        if (!containsWord(word)) {
+            provider.saveNewWord(result);
+            sortedByPointsWords.get(word.length()).add(new ScrabbleWord(result));
+        }
     }
 
     private void addAllCharsToList(List<ScrabbleChar> list, ScrabbleField[] fields) {

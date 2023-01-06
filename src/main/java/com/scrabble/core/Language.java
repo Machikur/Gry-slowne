@@ -78,6 +78,11 @@ public enum Language implements WordsProvider {
     }
 
     @Override
+    public void saveNewWord(String word) {
+        FileUtils.saveNewLine(this.name().toLowerCase(), word);
+    }
+
+    @Override
     public List<String> getEnabledWords(int maxSize) {
         return FileUtils.loadFromResourceFile(this.name().toLowerCase()).stream()
                 .filter(s -> s.length() <= maxSize)

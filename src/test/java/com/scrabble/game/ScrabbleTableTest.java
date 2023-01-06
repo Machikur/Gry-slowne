@@ -14,7 +14,7 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class ScrableTableTest {
+class ScrabbleTableTest {
 
     @Test
     void poolNextLetterTest() {
@@ -24,7 +24,7 @@ class ScrableTableTest {
         WordsProvider provider = mock(WordsProvider.class);
         ScrabbleDictionary dictionary = new ScrabbleDictionaryImpl(provider);
         when(dictionary.getScrabbleCharsPoolForNewGame()).thenReturn(startLetters);
-        ScrableTable table = new ScrableTable(dictionary, new DefaultTableConfiguration());
+        ScrabbleTable table = new ScrabbleTable(dictionary, new DefaultTableConfiguration());
 
         //when
         int startPlayerLettersQuantity = table.getPlayerLetters().size();

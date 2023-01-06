@@ -18,7 +18,6 @@ public class PatternUtils {
     private final static String PATTERN_START = "^(";
     private final static String PATTERN_FINISH = ")$";
 
-
     /**
      *
      * @param fieldsInLine which can be used to create word

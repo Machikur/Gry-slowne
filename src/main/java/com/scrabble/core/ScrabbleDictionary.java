@@ -30,4 +30,6 @@ public interface ScrabbleDictionary {
 
     boolean containsWord(String word);
 
+    void saveNewWord(String word);
+
 }

@@ -18,6 +18,10 @@ public class ScrabbleWord {
         Arrays.sort(sortedChars);
     }
 
+    public boolean containsWord(String word) {
+        return this.word.equals(word);
+    }
+
     public int getLength() {
         return sortedChars.length;
     }

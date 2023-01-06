@@ -16,14 +16,14 @@ import java.util.List;
  * Searching returns only propositions that do not affect neighbour words
  */
 
-public class ScrableTable {
+public class ScrabbleTable {
 
     private final ScrabbleField[][] scrabbleFields;
     private final LinkedList<ScrabbleChar> lettersPool;
     private final ScrabbleDictionary scrabbleDictionary;
     private final List<ScrabbleChar> playerLetters = new ArrayList<>();
 
-    public ScrableTable(ScrabbleDictionary dictionary, TableConfiguration c) {
+    public ScrabbleTable(ScrabbleDictionary dictionary, TableConfiguration c) {
         this.scrabbleDictionary = dictionary;
         this.lettersPool = new LinkedList<>(scrabbleDictionary.getScrabbleCharsPoolForNewGame());
         Collections.shuffle(this.lettersPool);

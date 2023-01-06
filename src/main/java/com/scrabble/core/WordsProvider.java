@@ -24,4 +24,6 @@ public interface WordsProvider {
      */
     int getBasicPointsForChar(char c);
 
+    void saveNewWord(String word);
+
 }

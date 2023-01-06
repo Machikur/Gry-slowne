@@ -11,38 +11,38 @@ import java.util.Objects;
 @Service
 public class TableService {
 
-    private ScrableTable scrableTable = null;
+    private ScrabbleTable scrabbleTable = null;
 
     public ScrabbleChar poolLetter() {
         ensureTableIsCreated();
-        return scrableTable.poolNextLetter();
+        return scrabbleTable.poolNextLetter();
     }
 
     public void putWord(ScrabbleWordRequest request) {
         ensureTableIsCreated();
-        scrableTable.putWord(request);
+        scrabbleTable.putWord(request);
     }
 
     public ScrabbleTableData getData() {
         ensureTableIsCreated();
-        return scrableTable.toData();
+        return scrabbleTable.toData();
     }
 
     public ScrabbleTableData getOrCreateNewTable(Language language, boolean force) {
-        if (force || scrableTable == null) {
-            this.scrableTable = new ScrableTable(new ScrabbleDictionaryImpl(language), new DefaultTableConfiguration());
+        if (force || scrabbleTable == null) {
+            this.scrabbleTable = new ScrabbleTable(new ScrabbleDictionaryImpl(language), new DefaultTableConfiguration());
         }
-        return this.scrableTable.toData();
+        return this.scrabbleTable.toData();
     }
 
 
     public ScrabbleWordProposition getProposition(Position position) {
         ensureTableIsCreated();
-        return scrableTable.getBestWordProposition(position);
+        return scrabbleTable.getBestWordProposition(position);
     }
 
     private void ensureTableIsCreated() {
-        Objects.requireNonNull(scrableTable, "Table must be created before any action");
+        Objects.requireNonNull(scrabbleTable, "Table must be created before any action");
     }
 
 }

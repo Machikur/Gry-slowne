@@ -8,7 +8,7 @@ import java.util.List;
 public class ScrabbleTableData {
 
     private final ScrabbleField[][] fields;
-    private final List<ScrabbleChar> chars;
+    private final List<ScrabbleChar> playerChars;
     private final int lettersLeft;
 
 }
