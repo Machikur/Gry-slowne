@@ -1,0 +1,15 @@
+<div
+  class="position-relative text-center suiseFont text-light cell {{
+    field?.scrabbleFieldBonus
+  }}"
+>
+  <span class="text-center h3" *ngIf="field">
+    {{ getDescByBonus(field.scrabbleFieldBonus) }}
+  </span>
+  <app-scrabble-block
+    cdkDropList
+    *ngIf="field?.scrabbleCharOn"
+    [scrableCharOn]="field?.scrabbleCharOn"
+  >
+  </app-scrabble-block>
+</div>

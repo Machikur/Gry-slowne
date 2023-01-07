@@ -1,0 +1,36 @@
+.cell {
+  font-weight: bold;
+  height: 70px;
+  width: 70px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+span {
+  color: rgba(0, 0, 0, 0.6);
+  min-height: 70px;
+  display: inline-flex;
+  align-items: center;
+  color: #fff;
+  text-shadow: 10pxz 1px 1px black, 0.15, 0 3px 10pxblack, 0.15,
+    0 3px 20px black;
+}
+
+.MULTIPLY_TWICE_LETTER {
+  background-image: linear-gradient(to right, white, rgb(51, 161, 235));
+}
+
+.MULTIPLY_TRIPLE_LETTER {
+  background-image: linear-gradient(to right, darkBlue, blue);
+}
+
+.MULTIPLY_TWICE_WORD {
+  background-image: linear-gradient(to right, #8b0000 0%, red 100%);
+}
+
+.MULTIPLY_TRIPLE_WORD {
+  background-image: linear-gradient(to right, #610000 0%, darkRed 100%);
+}
+
+.DEFAULT {
+  background-image: linear-gradient(to right, darkGreen 10%, green 90%);
+}
