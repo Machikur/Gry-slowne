@@ -8,6 +8,9 @@ public interface TableConfiguration {
      */
     int getTableSize();
 
+
+    int getLettersOnStart();
+
     /**
      * @param x field position
      * @param y field position

@@ -33,6 +33,9 @@ public class ScrabbleTable {
                 this.scrabbleFields[x][y] = new ScrabbleField(x, y, c.resolveFieldBonus(x, y));
             }
         }
+        for (int i = 0; i < c.getLettersOnStart(); i++) {
+            poolNextLetter();
+        }
     }
 
     public ScrabbleWordProposition getBestWordProposition(Position position) {

@@ -13,6 +13,11 @@ public class DefaultTableConfiguration implements TableConfiguration {
     }
 
     @Override
+    public int getLettersOnStart() {
+        return 7;
+    }
+
+    @Override
     public ScrabbleFieldBonus resolveFieldBonus(int x, int y) {
         if (resolveTripleWordMultiplier(x, y)) {
             return ScrabbleFieldBonus.MULTIPLY_TRIPLE_WORD;
