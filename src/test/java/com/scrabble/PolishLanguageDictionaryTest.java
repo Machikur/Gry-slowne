@@ -1,7 +1,7 @@
 package com.scrabble;
 
-import com.scrabble.core.ScrabbleDictionaryImpl;
 import com.scrabble.core.Language;
+import com.scrabble.core.ScrabbleDictionaryImpl;
 import com.scrabble.pojo.ScrabbleChar;
 import com.scrabble.pojo.ScrabbleField;
 import com.scrabble.pojo.ScrabbleFieldBonus;
@@ -20,7 +20,7 @@ public class PolishLanguageDictionaryTest {
         //given
         ScrabbleDictionaryImpl dictionary = new ScrabbleDictionaryImpl(Language.PL);
         ScrabbleField[] fields = new ScrabbleField[]{
-                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('b',1)),
+                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('b', 1)),
                 new ScrabbleField(1, 0, ScrabbleFieldBonus.DEFAULT),
                 new ScrabbleField(2, 0, ScrabbleFieldBonus.DEFAULT),
                 new ScrabbleField(3, 0, ScrabbleFieldBonus.DEFAULT),
@@ -34,7 +34,7 @@ public class PolishLanguageDictionaryTest {
                 new ScrabbleField(11, 0, ScrabbleFieldBonus.DEFAULT),
                 new ScrabbleField(12, 0, ScrabbleFieldBonus.DEFAULT),
                 new ScrabbleField(13, 0, ScrabbleFieldBonus.DEFAULT),
-                new ScrabbleField(14, 0, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('ć',1)),
+                new ScrabbleField(14, 0, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('ć', 1)),
         };
         List<ScrabbleChar> playerChars = Language.PL.getLettersPool();
 
@@ -43,7 +43,7 @@ public class PolishLanguageDictionaryTest {
         //then
 
         Assertions.assertNotNull(theBestWord);
-        Assertions.assertEquals(theBestWord.getWord(), "biurokratyzować");
+        Assertions.assertEquals(theBestWord.toWord(), "bluffujecie");
         Assertions.assertTrue(theBestWord.getPoints() > 0);
     }
 

@@ -1,5 +1,7 @@
 <div
-  class="position-relative text-center suiseFont text-light cell {{
+  (mouseenter)="mouseEnter()"
+  (mouseleave)="mouseLeave()"
+  class="position-relative text-center text-light cell prevent-select {{
     field?.scrabbleFieldBonus
   }}"
 >
@@ -7,9 +9,16 @@
     {{ getDescByBonus(field.scrabbleFieldBonus) }}
   </span>
   <app-scrabble-block
-    cdkDropList
+    cdkDrag
     *ngIf="field?.scrabbleCharOn"
     [scrableCharOn]="field?.scrabbleCharOn"
+  >
+  </app-scrabble-block>
+  <app-scrabble-block
+    *ngIf="prop"
+    [scrableCharOn]="prop"
+    [rotation]="0"
+    style="opacity: 0.9"
   >
   </app-scrabble-block>
 </div>

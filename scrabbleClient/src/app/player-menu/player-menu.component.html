@@ -1,0 +1,27 @@
+<div class="d-flex flex-column m-2 playerMenu mt-4">
+  <div class="playerLetters">
+    <div class="lettersRow d-flex flex-row" cdkDropList>
+      <div
+        class="position-relative charHolder"
+        *ngFor="let item of playerChars.slice(0, 5)"
+      >
+        <app-scrabble-block cdkDrag [scrableCharOn]="item" [rotation]="0">
+        </app-scrabble-block>
+      </div>
+    </div>
+    <div class="lettersRow d-flex flex-row" cdkDropList>
+      <div
+        class="position-relative charHolder"
+        *ngFor="let item of playerChars.slice(5, 10)"
+      >
+        <app-scrabble-block cdkDrag [scrableCharOn]="item" [rotation]="0">
+        </app-scrabble-block>
+      </div>
+    </div>
+  </div>
+  <button [disabled]="playerChars.length == 10" (click)="poolNextLetter()">
+    Get next letter
+  </button>
+
+  <button (click)="restartTable()">Restart game</button>
+</div>

@@ -9,14 +9,14 @@ import { ScrabbleChar } from '../data/scrabble-char';
 export class ScrabbleBlockComponent implements OnInit {
   @Input()
   scrableCharOn?: ScrabbleChar;
+
+  @Input()
   rotation: number;
 
   constructor() {
-    const maxhalfDeg: number = 10;
-    this.rotation = Math.random() * maxhalfDeg - maxhalfDeg / 2;
+    const maxHalfDeg: number = 10;
+    this.rotation = Math.random() * maxHalfDeg - maxHalfDeg / 2;
   }
 
   ngOnInit(): void {}
-
-  getRandomRotation() {}
 }

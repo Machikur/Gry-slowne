@@ -6,6 +6,7 @@ import com.scrabble.core.ScrabbleDictionaryImpl;
 import com.scrabble.pojo.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -31,6 +32,7 @@ public class TableService {
     public ScrabbleTableData getOrCreateNewTable(Language language, boolean force) {
         if (force || scrabbleTable == null) {
             this.scrabbleTable = new ScrabbleTable(new ScrabbleDictionaryImpl(language), new DefaultTableConfiguration());
+            this.scrabbleTable.start();
         }
         return this.scrabbleTable.toData();
     }
@@ -39,6 +41,11 @@ public class TableService {
     public ScrabbleWordProposition getProposition(Position position) {
         ensureTableIsCreated();
         return scrabbleTable.getBestWordProposition(position);
+    }
+
+    public List<String> getTheBestWords(int quantity) {
+        ensureTableIsCreated();
+        return scrabbleTable.getBestWordsToUse(quantity);
     }
 
     private void ensureTableIsCreated() {

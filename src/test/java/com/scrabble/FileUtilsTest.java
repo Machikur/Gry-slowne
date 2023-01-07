@@ -11,7 +11,7 @@ class FileUtilsTest {
     @Test
     public void shouldReadPolishDictionaryFile() {
         //when
-        List<String> polishWords = FileUtils.loadFromResourceFile("pl");
+        List<String> polishWords = FileUtils.loadGzipFile("pl");
 
         //then
         Assertions.assertNotNull(polishWords);

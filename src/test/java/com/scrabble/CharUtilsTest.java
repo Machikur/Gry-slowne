@@ -1,5 +1,8 @@
 package com.scrabble;
 
+import com.scrabble.pojo.ScrabbleChar;
+import com.scrabble.pojo.ScrabbleField;
+import com.scrabble.pojo.ScrabbleFieldBonus;
 import com.scrabble.pojo.ScrabbleWord;
 import com.scrabble.utill.CharUtils;
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +14,74 @@ import java.util.Arrays;
 import static com.scrabble.TestUtils.*;
 
 class CharUtilsTest {
+
+
+    @Test
+    void shouldFindStartIndex() {
+        //Given
+        String findingWord = "janusz";
+        ScrabbleField[] array = new ScrabbleField[]{
+                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('j', 0)),
+                new ScrabbleField(0, 1, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 2, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('j', 0)),
+                new ScrabbleField(0, 3, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 4, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 5, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 6, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 7, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 8, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 9, ScrabbleFieldBonus.DEFAULT),
+        };
+        //when
+        int index = CharUtils.findStartIndex(findingWord, array);
+
+        //then
+        Assertions.assertEquals(2, index);
+    }
+
+    @Test
+    void shouldNotFindStartIndex() {
+        //Given
+        String findingWord = "janusz";
+        ScrabbleField[] array = new ScrabbleField[]{
+                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('j', 0)),
+                new ScrabbleField(0, 1, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 2, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('j', 0)),
+                new ScrabbleField(0, 3, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 4, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 5, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('j',0)),
+                new ScrabbleField(0, 6, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 7, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 8, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 9, ScrabbleFieldBonus.DEFAULT),
+        };
+        //when
+        int index = CharUtils.findStartIndex(findingWord, array);
+
+        //then
+        Assertions.assertEquals(-1, index);
+    }
+
+    @Test
+    void shouldNotFindStartIndex2() {
+        //Given
+        String findingWord = "janusz";
+        ScrabbleField[] array = new ScrabbleField[]{
+                new ScrabbleField(0, 0, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('j', 0)),
+                new ScrabbleField(0, 1, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 2, ScrabbleFieldBonus.DEFAULT, new ScrabbleChar('j', 0)),
+                new ScrabbleField(0, 3, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 4, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 5, ScrabbleFieldBonus.DEFAULT),
+                new ScrabbleField(0, 6, ScrabbleFieldBonus.DEFAULT),
+        };
+        //when
+        int index = CharUtils.findStartIndex(findingWord, array);
+
+        //then
+        Assertions.assertEquals(-1, index);
+
+    }
 
     @Test
     void shouldFind4Letters() {

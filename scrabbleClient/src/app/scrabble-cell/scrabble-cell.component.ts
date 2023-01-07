@@ -1,7 +1,11 @@
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { GameData } from '../data/game-data';
 import { ScrabbleChar } from '../data/scrabble-char';
 import { ScrabbleField } from '../data/scrabble-field';
 import { ScrabbleFieldBonus } from '../data/scrabble-field-bonus';
+import { HttpService } from '../http-service';
 
 @Component({
   selector: 'app-scrabble-cell',
@@ -11,17 +15,49 @@ import { ScrabbleFieldBonus } from '../data/scrabble-field-bonus';
 export class ScrabbleCellComponent implements OnInit {
   @Input()
   field?: ScrabbleField;
+  waitingAction: any = 0;
+  prop?: ScrabbleChar;
 
-  constructor() {}
+  constructor(private http: HttpService, private gameData: GameData) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.gameData.subscribePropositionChange((swp) => {
+      if (this.field && !this.field.scrabbleCharOn) {
+        for (let scp of swp.scrabbleCharPropositions) {
+          if (scp.x == this.field.x && scp.y == this.field.y) {
+            this.prop = {
+              letter: scp.c,
+              points: scp.points,
+            };
+            return;
+          }
+        }
+      }
+      this.prop = undefined;
+    });
+  }
+
+  // drop(event: CdkDragDrop<string[]>) {
+  //   // moveItemInArray(this.items, event.previousIndex, event.currentIndex);
+  // }
+
+  mouseEnter() {
+    this.waitingAction = setTimeout(() => {
+      this.getProposition();
+    }, 100);
+  }
+
+  mouseLeave() {
+    clearTimeout(this.waitingAction);
+  }
+
+  getProposition(): void {
+    if (this.field) {
+      this.http.updateProposition(this.field.x, this.field.y);
+    }
+  }
 
   getDescByBonus(bonus: ScrabbleFieldBonus) {
-    // const charOn: ScrabbleChar = { letter: 'a', points: 1 };
-    // if (this.field && Math.random() > 0.5) {
-    //   this.field.scrabbleCharOn = charOn;
-    // }
-
     switch (bonus) {
       case ScrabbleFieldBonus.DEFAULT:
         return ' ';

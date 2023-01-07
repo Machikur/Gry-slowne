@@ -52,7 +52,7 @@ class ScrabbleDictionaryImplTest {
                 new ScrabbleChar('z', 1));
 
         //when
-        String theBestWord = dictionary.findTheBestProposition(fields, playerChars).getWord();
+        String theBestWord = dictionary.findTheBestProposition(fields, playerChars).toWord();
 
         //then
         Assertions.assertEquals(name0, theBestWord);
@@ -84,7 +84,7 @@ class ScrabbleDictionaryImplTest {
                 new ScrabbleChar('a', 1));
 
         //when
-        String theBestWord = dictionary.findTheBestProposition(fields, playerChars).getWord();
+        String theBestWord = dictionary.findTheBestProposition(fields, playerChars).toWord();
 
         //then
         Assertions.assertEquals(name1, theBestWord);
@@ -116,7 +116,7 @@ class ScrabbleDictionaryImplTest {
 
 
         //when
-        String theBestWord = dictionary.findTheBestProposition(fields, playerChars).getWord();
+        String theBestWord = dictionary.findTheBestProposition(fields, playerChars).toWord();
 
         //then
         Assertions.assertEquals(name0, theBestWord);

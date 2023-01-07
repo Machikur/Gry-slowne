@@ -1,14 +1,12 @@
-<div class="d-flex justify-content-around w-100">
-  <div class="m-4 scrableTable">
-    <div *ngIf="fields" class="d-flex flex-column-reverse">
-      <div *ngFor="let arrayField of fields" class="d-flex m-05">
-        <app-scrabble-cell
-          *ngFor="let field of arrayField"
-          [field]="field"
-          class="m-05"
-        >
-        </app-scrabble-cell>
-      </div>
+<div class="m-4 scrableTable">
+  <div *ngIf="fields" class="d-flex flex-row">
+    <div *ngFor="let arrayField of fields" class="d-flex flex-column m-05">
+      <app-scrabble-cell
+        *ngFor="let field of arrayField"
+        [field]="field"
+        class="m-05"
+      >
+      </app-scrabble-cell>
     </div>
   </div>
 </div>

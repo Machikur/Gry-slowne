@@ -19,9 +19,8 @@ public class PatternUtils {
     private final static String PATTERN_FINISH = ")$";
 
     /**
-     *
      * @param fieldsInLine which can be used to create word
-     * @param direction direction used to create word
+     * @param direction    direction used to create word
      * @return pattern includes all possibilities to create a word in given fields
      */
     public static Pattern createPattern(ScrabbleField[] fieldsInLine, Direction direction) {

@@ -1,5 +1,7 @@
 package com.scrabble.pojo;
 
+import java.util.Arrays;
+
 public enum Direction {
     VERTICALLY,
     HORIZONTALLY;
@@ -13,16 +15,17 @@ public enum Direction {
         ScrabbleField previous = fields[0];
         for (int i = 1; i < fields.length; i++) {
             ScrabbleField current = fields[i];
-            if (yFlow && !previous.isNextTo(current, Direction.VERTICALLY)) {
+            if (yFlow && !previous.isInLine(current, Direction.VERTICALLY)) {
                 yFlow = false;
             }
-            if (xFlow && !previous.isNextTo(current, Direction.HORIZONTALLY)) {
+            if (xFlow && !previous.isInLine(current, Direction.HORIZONTALLY)) {
                 xFlow = false;
             }
             previous = current;
         }
         if (xFlow) return Direction.HORIZONTALLY;
         if (yFlow) return Direction.VERTICALLY;
+        Arrays.stream(fields).forEach(System.out::println);
         throw new RuntimeException("Unknown direction");
     }
 }

@@ -1,7 +1,6 @@
 package com.scrabble.pojo;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
 
@@ -27,5 +26,10 @@ public class ScrabbleChar {
     @Override
     public int hashCode() {
         return Objects.hash(letter);
+    }
+
+    @Override
+    public String toString() {
+        return "" + letter;
     }
 }

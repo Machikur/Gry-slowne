@@ -1,0 +1,15 @@
+.playerLetters {
+  width: 100%;
+  height: 140px;
+  background-color: white;
+  border: 2px solid black;
+}
+
+.charHolder {
+  width: 70px;
+  height: 70px;
+}
+
+.playerMenu {
+  width: 400px;
+}

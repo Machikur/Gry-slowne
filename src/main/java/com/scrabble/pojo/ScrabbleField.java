@@ -24,12 +24,12 @@ public class ScrabbleField {
         this.scrabbleCharOn = charOn;
     }
 
-    public boolean isNextTo(ScrabbleField scrabbleField, Direction direction) {
+    public boolean isInLine(ScrabbleField scrabbleField, Direction direction) {
         switch (direction) {
             case HORIZONTALLY:
-                return this.y == scrabbleField.y && Math.abs(this.x - scrabbleField.x) == 1;
+                return this.y == scrabbleField.y && this.x != scrabbleField.x;
             case VERTICALLY:
-                return this.x == scrabbleField.x && Math.abs(this.y - scrabbleField.y) == 1;
+                return this.x == scrabbleField.x && this.y != scrabbleField.y;
             default:
                 throw new RuntimeException(String.format("%s - direction not recognized", direction));
         }
@@ -57,5 +57,13 @@ public class ScrabbleField {
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
+    }
+
+    @Override
+    public String toString() {
+        return "ScrabbleField{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

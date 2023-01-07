@@ -35,18 +35,18 @@ public class DefaultTableConfiguration implements TableConfiguration {
     }
 
     private boolean resolveTripleWordMultiplier(int x, int y) {
-        return  ((x == MAX_INDEX || x == 0) && (y == MAX_INDEX || y == 0 || y == MAX_INDEX / 2)) ||
+        return ((x == MAX_INDEX || x == 0) && (y == MAX_INDEX || y == 0 || y == MAX_INDEX / 2)) ||
                 ((x == MAX_INDEX / 2) && (y == MAX_INDEX || y == 0));
     }
 
     private boolean resolveTwiceWordMultiplier(int x, int y) {
-        return  ((x == y) && ((x > 0 && x < 5) || (x > 9 && x < MAX_INDEX))) ||
+        return ((x == y) && ((x > 0 && x < 5) || (x > 9 && x < MAX_INDEX))) ||
                 ((x + y) == MAX_INDEX) && ((x > 0 && x < 5) || (x > 9 && x < MAX_INDEX));
     }
 
     private boolean resolveTripleLetterMultiplier(int x, int y) {
         return          //center
-                        ((x == y) && (x == 5 || x == 9)) ||
+                ((x == y) && (x == 5 || x == 9)) ||
                         (Math.min(x, y) == 5 && Math.max(x, y) == 9) ||
 
                         //around
@@ -56,7 +56,7 @@ public class DefaultTableConfiguration implements TableConfiguration {
 
     private boolean resolveTwiceLetterMultiplier(int x, int y) {
         return           //around
-                        (Math.min(x, y) == 0 && (Math.max(x, y) == 3 || Math.max(x, y) == 11)) ||
+                (Math.min(x, y) == 0 && (Math.max(x, y) == 3 || Math.max(x, y) == 11)) ||
                         (Math.max(x, y) == MAX_INDEX && (Math.min(x, y) == 3 || Math.min(x, y) == 11)) ||
 
                         //inner
@@ -66,7 +66,7 @@ public class DefaultTableConfiguration implements TableConfiguration {
                         (Math.max(x, y) == 11 && (Math.min(x, y) == 7)) ||
 
                         //center
-                        ((x == y) && (x == 6|| x==8) || (Math.min(x, y) == 6 && Math.max(x, y) == 8));
+                        ((x == y) && (x == 6 || x == 8) || (Math.min(x, y) == 6 && Math.max(x, y) == 8));
     }
 
 }

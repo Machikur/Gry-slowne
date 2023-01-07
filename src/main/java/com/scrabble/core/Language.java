@@ -56,7 +56,14 @@ public enum Language implements WordsProvider {
             new ScrabbleCharInit('ń', 7),
             new ScrabbleCharInit('ź', 9),
 
-            new ScrabbleCharInit(' ', 2, 0));
+            new ScrabbleCharInit(' ', 2, 0),
+
+            //todo remove from all words
+            new ScrabbleCharInit('v', 0, 0),
+            new ScrabbleCharInit('q', 0, 0),
+            new ScrabbleCharInit('x', 0, 0)),
+    ;
+
 
     @Override
     public List<ScrabbleChar> getLettersPool() {
@@ -84,7 +91,7 @@ public enum Language implements WordsProvider {
 
     @Override
     public List<String> getEnabledWords(int maxSize) {
-        return FileUtils.loadFromResourceFile(this.name().toLowerCase()).stream()
+        return FileUtils.loadGzipFile(this.name().toLowerCase()).stream()
                 .filter(s -> s.length() <= maxSize)
                 .collect(Collectors.toList());
     }

@@ -1,9 +1,7 @@
 <div
-  class="position-absolute block"
+  class="position-absolute block prevent-select"
   [style.transform]="'rotate(' + rotation + 'deg)'"
 >
-  <span class="h1 suisse m-auto">{{
-    scrableCharOn?.letter?.toUpperCase()
-  }}</span>
+  <span class="h1 m-auto">{{ scrableCharOn?.letter?.toUpperCase() }}</span>
   <span class="position-absolute points">{{ scrableCharOn?.points }} </span>
 </div>

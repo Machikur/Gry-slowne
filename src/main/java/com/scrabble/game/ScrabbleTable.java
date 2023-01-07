@@ -18,25 +18,35 @@ import java.util.List;
 
 public class ScrabbleTable {
 
+    private final TableConfiguration c;
     private final ScrabbleField[][] scrabbleFields;
     private final LinkedList<ScrabbleChar> lettersPool;
     private final ScrabbleDictionary scrabbleDictionary;
     private final List<ScrabbleChar> playerLetters = new ArrayList<>();
 
     public ScrabbleTable(ScrabbleDictionary dictionary, TableConfiguration c) {
+        this.c = c;
         this.scrabbleDictionary = dictionary;
         this.lettersPool = new LinkedList<>(scrabbleDictionary.getScrabbleCharsPoolForNewGame());
         Collections.shuffle(this.lettersPool);
-        this.scrabbleFields = new ScrabbleField[c.getTableSize()][c.getTableSize()];
+        this.scrabbleFields = new ScrabbleField[this.c.getTableSize()][this.c.getTableSize()];
         for (int x = 0; x < scrabbleFields.length; x++) {
             for (int y = 0; y < scrabbleFields[x].length; y++) {
-                this.scrabbleFields[x][y] = new ScrabbleField(x, y, c.resolveFieldBonus(x, y));
+                this.scrabbleFields[x][y] = new ScrabbleField(x, y, this.c.resolveFieldBonus(x, y));
+//                if (Math.random() < 0.2) {
+//                    this.scrabbleFields[x][y].setScrabbleCharOn(lettersPool.poll());
+//                }
             }
         }
+    }
+
+
+    public void start() {
         for (int i = 0; i < c.getLettersOnStart(); i++) {
             poolNextLetter();
         }
     }
+
 
     public ScrabbleWordProposition getBestWordProposition(Position position) {
         return getAllAvailableFieldsInLine(position).stream()
@@ -69,56 +79,63 @@ public class ScrabbleTable {
 
     private List<ScrabbleField[]> getAllAvailableFieldsInLine(Position position) {
         List<ScrabbleField[]> allPossibleFieldsArray = new ArrayList<>();
-        allPossibleFieldsArray.addAll(checkNeighbourFieldsAndSplitIntoAvailableFields(scrabbleFields[position.getX()], Direction.VERTICALLY));
-        allPossibleFieldsArray.addAll(checkNeighbourFieldsAndSplitIntoAvailableFields(getAllByYPos(position.getY()), Direction.HORIZONTALLY));
+        allPossibleFieldsArray.addAll(checkNeighbourFieldsAndSplitIntoAvailableFields(scrabbleFields[position.getX()], position, Direction.VERTICALLY));
+        allPossibleFieldsArray.addAll(checkNeighbourFieldsAndSplitIntoAvailableFields(getAllByYPos(position.getY()), position, Direction.HORIZONTALLY));
         return allPossibleFieldsArray;
     }
 
-    private List<ScrabbleField[]> checkNeighbourFieldsAndSplitIntoAvailableFields(ScrabbleField[] line, Direction direction) {
-        int y = line[0].getY();
-        int x = line[0].getX();
+    private List<ScrabbleField[]> checkNeighbourFieldsAndSplitIntoAvailableFields(ScrabbleField[] line, Position position, Direction direction) {
+        int y = position.getX();
+        int x = position.getY();
         List<ScrabbleField[]> fieldsToCheck = new ArrayList<>();
         switch (direction) {
-            case HORIZONTALLY:
-                if (x > 0) {
-                    fieldsToCheck.add(scrabbleFields[x - 1]);
-                }
-                if (x < scrabbleFields.length) {
-                    fieldsToCheck.add(scrabbleFields[x + 1]);
-                }
-                return splitIntoAvailableFields(line, fieldsToCheck);
             case VERTICALLY:
                 if (y > 0) {
-                    fieldsToCheck.add(getAllByYPos(y - 1));
+                    fieldsToCheck.add(scrabbleFields[y - 1]);
                 }
-                if (y < scrabbleFields.length) {
-                    fieldsToCheck.add(getAllByYPos(y + 1));
+                if (y < scrabbleFields.length - 1) {
+                    fieldsToCheck.add(scrabbleFields[y + 1]);
+                }
+                return splitIntoAvailableFields(line, fieldsToCheck);
+            case HORIZONTALLY:
+                if (x > 0) {
+                    fieldsToCheck.add(getAllByYPos(x - 1));
+                }
+                if (x < scrabbleFields.length - 1) {
+                    fieldsToCheck.add(getAllByYPos(x + 1));
                 }
                 return splitIntoAvailableFields(line, fieldsToCheck);
         }
         return Collections.emptyList();
     }
 
-    private List<ScrabbleField[]> splitIntoAvailableFields(ScrabbleField[] line, List<ScrabbleField[]> fieldsToCheck) {
+    private List<ScrabbleField[]> splitIntoAvailableFields(ScrabbleField[] line, List<ScrabbleField[]> linesToCheck) {
         List<ScrabbleField[]> result = new ArrayList<>();
-        List<ScrabbleField> current = new ArrayList<>();
+        List<ScrabbleField> currentPossibleFields = new ArrayList<>();
         int maxLength = line.length - 1;
         for (int i = 0; i <= maxLength; i++) {
-            for (ScrabbleField[] field : fieldsToCheck) {
-                ScrabbleField currentField = field[i];
-                if (currentField.getScrabbleFieldBonus() != null) {
-                    if (current.size() >= Config.MIN_LETTERS_TO_CREATE_WORD) {
-                        result.add(current.toArray(new ScrabbleField[0]));
+            ScrabbleField currentField = line[i];
+            if (currentField.getScrabbleCharOn() != null) {
+                currentPossibleFields.add(currentField);
+            } else {
+                boolean anyNeighbourScrabbleChar = false;
+                for (ScrabbleField[] fieldsLine : linesToCheck) {
+                    if (fieldsLine[i].getScrabbleCharOn() != null) {
+                        if (currentPossibleFields.size() >= Config.MIN_LETTERS_TO_CREATE_WORD) {
+                            anyNeighbourScrabbleChar = true;
+                            break;
+                        }
                     }
-                    current.clear();
-                } else {
-                    current.add(currentField);
                 }
+                if (anyNeighbourScrabbleChar) {
+                    result.add(currentPossibleFields.toArray(new ScrabbleField[0]));
+                    currentPossibleFields.clear();
+                    continue;
+                }
+                currentPossibleFields.add(currentField);
             }
-            if (i == maxLength) {
-                if (current.size() >= Config.MIN_LETTERS_TO_CREATE_WORD) {
-                    result.add(current.toArray(new ScrabbleField[0]));
-                }
+            if (i == maxLength && currentPossibleFields.size() >= Config.MIN_LETTERS_TO_CREATE_WORD) {
+                result.add(currentPossibleFields.toArray(new ScrabbleField[0]));
             }
         }
         return result;

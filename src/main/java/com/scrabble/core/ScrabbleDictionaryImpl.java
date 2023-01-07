@@ -50,7 +50,7 @@ public class ScrabbleDictionaryImpl implements ScrabbleDictionary {
         }
 
         Pattern pattern = PatternUtils.createPattern(availableFieldsInLine, direction);
-        return possibleWords.stream()
+        return possibleWords.parallelStream()
                 .filter(s -> pattern.matcher(s).find())
                 .map(s -> toProposition(availableFieldsInLine, direction, s))
                 .max(ScrabbleWordProposition::compareTo)
@@ -85,38 +85,39 @@ public class ScrabbleDictionaryImpl implements ScrabbleDictionary {
     }
 
     private ScrabbleWordProposition toProposition(ScrabbleField[] fields, Direction direction, String word) {
-        char firstSign = word.charAt(0);
-        for (int i = 0; i < fields.length; i++) {
-            ScrabbleField field = fields[i];
-            ScrabbleChar current = field.getScrabbleCharOn();
-            if (current == null) {
-                continue;
-            }
-            if (current.getLetter() == firstSign) {
-                if (!checkIfAnyLetterIsAdded(fields, word, i)) {
-                    continue;
+        int startIndex = CharUtils.findStartIndex(word, fields);
+        if (startIndex == -1) {
+            return EMPTY_PROPOSITION;
+        }
+        ScrabbleField startField = fields[startIndex];
+        int startX = startField.getX();
+        int startY = startField.getY();
+        int pointsForWord = countPoints(fields, word, startIndex);
+        int length = word.length();
+        char[] charArray = word.toCharArray();
+        ScrabbleCharProposition[] propositions = new ScrabbleCharProposition[length];
+        switch (direction) {
+            case VERTICALLY:
+                for (int i = 0; i < length; i++) {
+                    char c = charArray[i];
+                    propositions[i] = new ScrabbleCharProposition(startX, startY + i, charArray[i], provider.getBasicPointsForChar(c));
                 }
-                int pointsForWord = countPoints(fields, word, i);
-                return new ScrabbleWordProposition(new Position(field.getX(), field.getY()), word, pointsForWord, direction);
-            }
+                break;
+            case HORIZONTALLY:
+                for (int i = 0; i < length; i++) {
+                    char c = charArray[i];
+                    propositions[i] = new ScrabbleCharProposition(startX + i, startY, charArray[i], provider.getBasicPointsForChar(c));
+                }
+                break;
         }
-        return EMPTY_PROPOSITION;
-    }
-
-    private boolean checkIfAnyLetterIsAdded(ScrabbleField[] fields, String word, int startIndex) {
-        for (int i = startIndex; i < startIndex + word.length(); i++) {
-            if (fields[i].getScrabbleCharOn() == null) {
-                return true;
-            }
-        }
-        return false;
+        return new ScrabbleWordProposition(propositions, pointsForWord);
     }
 
     private int countPoints(ScrabbleField[] fields, String word, int startIndex) {
         List<ScrabbleFieldBonus> wordBonuses = new ArrayList<>();
         int points = 0;
         int currentLetter = 0;
-        for (int i = startIndex; i < startIndex + word.length(); i++) {
+        for (int i = startIndex; i < startIndex + word.length() - 1; i++) {
             ScrabbleField current = fields[i];
             ScrabbleFieldBonus bonus = current.getScrabbleFieldBonus();
             int charPoints = provider.getBasicPointsForChar(word.charAt(currentLetter));

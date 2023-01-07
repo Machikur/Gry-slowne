@@ -1,11 +1,10 @@
 .block {
-  min-height: 60px;
   display: inline-flex;
   align-items: center;
   position: absolute;
   cursor: pointer;
   width: 65px;
-  font-weight: bold;
+  font-weight: 100;
   height: 65px;
   left: 2px;
   top: 2px;
@@ -24,4 +23,5 @@
 .points {
   bottom: 5%;
   right: 5%;
+  font-weight: bold;
 }

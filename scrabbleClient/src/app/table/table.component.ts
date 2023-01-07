@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameData } from '../data/game-data';
 import { ScrabbleChar } from '../data/scrabble-char';
 import { ScrabbleField } from '../data/scrabble-field';
 import { HttpService } from '../http-service';
@@ -10,21 +11,14 @@ import { HttpService } from '../http-service';
 })
 export class TableComponent implements OnInit {
   fields?: ScrabbleField[][];
-  playersChar: ScrabbleChar[] = [];
-  lettersLeft: number = 0;
 
-  constructor(private httpService: HttpService) {}
-
-  ngOnInit(): void {
-    this.createNewTable();
+  constructor(private http: HttpService, gameData: GameData) {
+    gameData.subscribeDataChange((data) => {
+      this.fields = data.fields;
+    });
   }
 
-  public createNewTable() {
-    this.httpService.getOrCreateTable().subscribe((data) => {
-      console.log(data);
-      this.fields = data.fields;
-      this.playersChar = data.playerChars;
-      this.lettersLeft = data.lettersLeft;
-    });
+  ngOnInit(): void {
+    this.http.getOrCreateTable();
   }
 }
